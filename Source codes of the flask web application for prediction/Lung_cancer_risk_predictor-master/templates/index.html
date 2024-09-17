@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <title>Lung Cancer Risk Predictor</title>
+    <script>
+      function validateForm() {
+        // Validate the age field
+        var ageField = document.getElementById("age");
+        var ageValue = ageField.value.trim();
+
+        if (!/^\d+$/.test(ageValue)) {
+          alert("Please enter a valid numeric age.");
+          ageField.focus();
+          return false;
+        }
+        var maleCheckbox = document.getElementById("MaleCheckbox");
+        var femaleCheckbox = document.getElementById("FemaleCheckbox");
+
+        if (!maleCheckbox.checked && !femaleCheckbox.checked) {
+          alert("Please select your gender");
+          return false;
+        } else if (maleCheckbox.checked && femaleCheckbox.checked) {
+          alert("Please select only one gender (either Male or Female).");
+          return false;
+        }
+
+        return true; // Submit the form if all validations pass
+      }
+    </script>
+  </head>
+  <body>
+    
+    <main>
+      <div class="wrapper">
+        <div class="title">Lung Cancer Risk Predictor</div>
+        <form action="/" method="POST" onsubmit="return validateForm()">
+          <div class="form">
+            <div class="inputfield">
+              <label for="age">Age</label>
+              <input type="text" class="input" name="age" id="age" required />
+            </div>
+
+            <div class="inputfield">
+              <label for="smoking">Smoking</label>
+              <div class="custom_select">
+                <select name="smoking" id="smoking" required>
+                  <option value="" selected hidden>Select</option>
+                  <option value="YES">YES</option>
+                  <option value="NO">NO</option>
+                </select>
+              </div>
+            </div>
+            <div class="inputfield">
+              <label for="fatigue">Fatigue</label>
+              <div class="custom_select">
+                <select name="fatigue" id="fatigue" required>
+                  <option value="" selected hidden>Select</option>
+                  <option value="YES">YES</option>
+                  <option value="NO">NO</option>
+                </select>
+              </div>
+            </div>
+            <div class="inputfield">
+              <label for="alcohol">Alcohol Consuming</label>
+              <div class="custom_select">
+                <select name="alcohol" id="alcohol" required>
+                  <option value="" selected hidden>Select</option>
+                  <option value="YES">YES</option>
+                  <option value="NO">NO</option>
+                </select>
+              </div>
+            </div>
+            <div class="inputfield">
+              <label for="cough">Coughing</label>
+              <div class="custom_select">
+                <select name="cough" id="cough" required>
+                  <option value="" selected hidden>Select</option>
+                  <option value="YES">YES</option>
+                  <option value="NO">NO</option>
+                </select>
+              </div>
+            </div>
+            <div class="check">
+              <div>
+                <label for="Male">Male</label>
+                <input type="checkbox" name="Male" id="MaleCheckbox" />
+              </div>
+              <div>
+                <label for="Female">Female</label>
+                <input type="checkbox" name="Female" id="FemaleCheckbox" />
+              </div>
+            </div>
+
+            <div class="inputfield">
+              <input
+                type="submit"
+                class="btn"
+                value="Predict Lung Cancer Risk"
+              />
+            </div>
+          </div>
+        </form>
+        {% if error_message %}
+        <div class="error">
+          <p>{{ error_message }}</p>
+        </div>
+        {% endif %}
+        <div class="result">
+          {% if pred_value == 1 %}
+          <p class="positive-risk">You have positive lung cancer risk!</p>
+          {% elif pred_value == 0 %}
+          <p class="negative-risk">You don't have a lung cancer risk</p>
+          {% else %}
+          <p class="no-prediction">No prediction available</p>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+    
+  </body>
+</html>
